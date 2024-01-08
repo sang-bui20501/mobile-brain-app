@@ -81,46 +81,6 @@ fun RememberImageScreen() {
     var selectedImages by remember { mutableStateOf<List<Int>>(emptyList()) }
     var scoreIncrease by remember { mutableStateOf(false) }
     var gameCompleted by remember { mutableStateOf(false) }
-    var autoClickEnabled by remember { mutableStateOf(false) }
-
-    fun onCheckSelectedImages(){
-        if (currentRound in 6..10) {
-            if (selectedImages.size == 2) {
-                if (selectedImages.contains(selectedImage) && selectedImages.contains(
-                        selectedImage2
-                    )
-                ) {
-                    score += 100
-                    scoreIncrease = true
-                }
-            }
-        } else {
-            if (selectedImages.size == 1) {
-                if (selectedImages.count { it == selectedImage } == 1) {
-                    score += 100
-                    scoreIncrease = true
-
-                }
-            }
-        }
-        currentRound++
-        level = currentRound
-        CoroutineScope(Dispatchers.Main).launch {
-            if (currentRound == 11) {
-                gameCompleted = true
-            }
-            if (scoreIncrease) {
-                showTickEffect = true
-            }
-            delay(2000) // Adjust the delay time as needed
-            showTickEffect = false
-            isTimeUp = false
-            scoreIncrease = false
-            selectedImage = -1
-            selectedImage2 = -1
-            selectedImages = emptyList()
-        }
-    }
 
     LaunchedEffect(isTimeUp) {
         val drawableImages = listOf(
@@ -161,14 +121,6 @@ fun RememberImageScreen() {
                 (remainingForSelection.shuffled().take(imageCount - 2) + selectedImage + selectedImage2).shuffled()
             } else {
                 (remainingForSelection.shuffled().take(imageCount - 1) + selectedImage).shuffled()
-            }
-        }
-        if (isTimeUp && !autoClickEnabled) {
-            autoClickEnabled = true
-            delay(1000)
-            if (isTimeUp && autoClickEnabled) {
-                autoClickEnabled = false
-                onCheckSelectedImages()
             }
         }
     }
@@ -304,9 +256,42 @@ fun RememberImageScreen() {
                         // Button to check selected images
                         Button(
                             onClick = {
-                                onCheckSelectedImages()
-                                autoClickEnabled = false
+                                if (currentRound in 6..10) {
+                                    if (selectedImages.size == 2) {
+                                        if (selectedImages.contains(selectedImage) && selectedImages.contains(
+                                                selectedImage2
+                                            )
+                                        ) {
+                                            score += 100
+                                            scoreIncrease = true
+                                        }
+                                    }
+                                } else {
+                                    if (selectedImages.size == 1) {
+                                        if (selectedImages.count { it == selectedImage } == 1) {
+                                            score += 100
+                                            scoreIncrease = true
 
+                                        }
+                                    }
+                                }
+                                currentRound++
+                                level = currentRound
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    if (currentRound == 11) {
+                                        gameCompleted = true
+                                    }
+                                    if (scoreIncrease) {
+                                        showTickEffect = true
+                                    }
+                                    delay(2000) // Adjust the delay time as needed
+                                    showTickEffect = false
+                                    isTimeUp = false
+                                    scoreIncrease = false
+                                    selectedImage = -1
+                                    selectedImage2 = -1
+                                    selectedImages = emptyList()
+                                }
                             },
                             modifier = Modifier.padding(8.dp)
                         ) {
