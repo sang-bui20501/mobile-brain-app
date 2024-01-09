@@ -147,6 +147,121 @@ fun GameLayout(
     isGuessWrong: Boolean,
     userGuess: String,
     onUserGuessChanged: (String) -> Unit,
+    onKeyboardDone: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val mediumPadding = dimensionResource(R.dimen.padding_medium)
+
+    Card(
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(mediumPadding),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(mediumPadding)
+        ) {
+            Text(
+                modifier = Modifier
+                    .clip(shapes.medium)
+                    .background(colorScheme.surfaceTint)
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                    .align(alignment = Alignment.End),
+                text = stringResource(R.string.word_count, wordCount),
+                style = typography.titleMedium,
+                color = colorScheme.onPrimary
+            )
+            Text(
+                text = currentScrambledWord.take(1), // Display only the first letter
+                style = typography.displayMedium
+            )
+            Text(
+                text = stringResource(R.string.instructions),
+                textAlign = TextAlign.Center,
+                style = typography.titleMedium
+            )
+            OutlinedTextField(
+                value = userGuess,
+                singleLine = true,
+                shape = shapes.large,
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = colorScheme.surface,
+                    unfocusedContainerColor = colorScheme.surface,
+                    disabledContainerColor = colorScheme.surface,
+                ),
+                onValueChange = { onUserGuessChanged(it) },
+                label = {
+                    if (isGuessWrong) {
+                        Text(stringResource(R.string.wrong_guess))
+                    } else {
+                        Text(stringResource(R.string.enter_your_word))
+                    }
+                },
+                isError = isGuessWrong,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { onKeyboardDone(userGuess) }
+                )
+            )
+        }
+    }
+}
+
+/*
+ * Creates and shows an AlertDialog with final score.
+ */
+@Composable
+private fun FinalScoreDialog(
+    score: Int,
+    onPlayAgain: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val activity = (LocalContext.current as Activity)
+
+    AlertDialog(
+        onDismissRequest = {
+            // Dismiss the dialog when the user clicks outside the dialog or on the back
+            // button. If you want to disable that functionality, simply use an empty
+            // onCloseRequest.
+        },
+        title = { Text(text = stringResource(R.string.congratulations)) },
+        text = { Text(text = stringResource(R.string.you_scored, score)) },
+        modifier = modifier,
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    activity.finish()
+                }
+            ) {
+                Text(text = stringResource(R.string.exit))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onPlayAgain) {
+                Text(text = stringResource(R.string.play_again))
+            }
+        }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GameScreenPreview() {
+    UnscrambleTheme {
+        GameScreen()
+    }
+}
+
+
+/*fun GameLayout(
+    currentScrambledWord: String,
+    wordCount: Int,
+    isGuessWrong: Boolean,
+    userGuess: String,
+    onUserGuessChanged: (String) -> Unit,
     onKeyboardDone: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -208,49 +323,4 @@ fun GameLayout(
             )
         }
     }
-}
-
-/*
- * Creates and shows an AlertDialog with final score.
- */
-@Composable
-private fun FinalScoreDialog(
-    score: Int,
-    onPlayAgain: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val activity = (LocalContext.current as Activity)
-
-    AlertDialog(
-        onDismissRequest = {
-            // Dismiss the dialog when the user clicks outside the dialog or on the back
-            // button. If you want to disable that functionality, simply use an empty
-            // onCloseRequest.
-        },
-        title = { Text(text = stringResource(R.string.congratulations)) },
-        text = { Text(text = stringResource(R.string.you_scored, score)) },
-        modifier = modifier,
-        dismissButton = {
-            TextButton(
-                onClick = {
-                    activity.finish()
-                }
-            ) {
-                Text(text = stringResource(R.string.exit))
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onPlayAgain) {
-                Text(text = stringResource(R.string.play_again))
-            }
-        }
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GameScreenPreview() {
-    UnscrambleTheme {
-        GameScreen()
-    }
-}
+}*/
