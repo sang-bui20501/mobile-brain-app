@@ -70,18 +70,29 @@ class GameViewModel : ViewModel() {
      */
     private fun getNextWord() {
         currentWord = allWordsList.random()
-        val halfLength = currentWord.length / 2
-        val scrambledHalf = currentWord.substring(0, halfLength)
+
+        // Check if the current word has a space
+        val spaceIndex = currentWord.indexOf(" ")
+
+        // If there is a space, display only the first word
+        val scrambledHalf = if (spaceIndex != -1) {
+            currentWord.substring(0, spaceIndex)
+        } else {
+            // If no space, use the original logic
+            val halfLength = currentWord.length / 2
+            currentWord.substring(0, halfLength)
+        }
 
         if (wordsList.contains(currentWord)) {
             getNextWord()
         } else {
-            Log.d("Unscramble", "currentWord= $currentWord")
+            Log.d("Guess the word", "currentWord= $currentWord")
             _currentScrambledWord.value = scrambledHalf
             _currentWordCount.value = _currentWordCount.value?.inc()
             wordsList.add(currentWord)
         }
     }
+
 
 
     /*
@@ -107,12 +118,15 @@ class GameViewModel : ViewModel() {
     * Increases the score accordingly.
     */
     fun isUserWordCorrect(playerWord: String): Boolean {
-        if (playerWord.equals(currentWord, true)) {
+        val combinedWord = "${_currentScrambledWord.value} $playerWord"
+
+        if (combinedWord.equals(currentWord, true)) {
             increaseScore()
             return true
         }
         return false
     }
+
 
     /*
     * Returns true if the current word count is less than MAX_NO_OF_WORDS

@@ -15,8 +15,8 @@
   -->
 
 <resources>
-    <string name="app_name">Unscramble</string>
-    <string name="instructions">Unscramble the word using all the letters.</string>
+    <string name="app_name">Guess the word</string>
+    <string name="instructions">Guess the second half to make a meaningful word</string>
     <string name="skip">Skip</string>
     <string name="submit">Submit</string>
     <string name="score">Score: %d</string>
