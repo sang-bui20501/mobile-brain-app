@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -16,8 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -31,17 +28,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.alpha
 import kotlinx.coroutines.delay
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.memorygame.R
-import com.example.memorygame.Screen
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -49,7 +41,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -60,9 +51,6 @@ import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.material3.AlertDialog
 
 
@@ -72,7 +60,7 @@ fun RememberImageScreen() {
     var score by remember { mutableStateOf(0) }
     var showTickEffect by remember { mutableStateOf(false) }
     var level by remember { mutableStateOf(1) }
-    var currentRound by remember { mutableStateOf(1) }
+    var round by remember { mutableStateOf(1) }
     var isTimeUp by remember { mutableStateOf(false) }
     var selectedImage by remember { mutableStateOf(-1) }
     var selectedImage2 by remember { mutableStateOf(-1) }
@@ -95,7 +83,7 @@ fun RememberImageScreen() {
             R.drawable.image9,
             R.drawable.image10
         )
-        val imageCount = when (currentRound) {
+        val imageCount = when (round) {
             in 1..3 -> 4
             in 4..7 -> 5
             else -> 6
@@ -104,7 +92,7 @@ fun RememberImageScreen() {
         if (!isTimeUp) {
             images = drawableImages.shuffled().take(4)
             selectedImage = when {
-                currentRound in 6..10 -> {
+                round in 6..10 -> {
                     val shuffledImages = images.shuffled()
                     val firstImage = shuffledImages[0]
                     val secondImage = shuffledImages.firstOrNull { it != firstImage } ?: firstImage
@@ -117,7 +105,7 @@ fun RememberImageScreen() {
             isTimeUp = true
         } else {
             val remainingForSelection = drawableImages.filterNot { it in images }
-            mixedImages = if (currentRound in 6..10) {
+            mixedImages = if (round in 6..10) {
                 (remainingForSelection.shuffled().take(imageCount - 2) + selectedImage + selectedImage2).shuffled()
             } else {
                 (remainingForSelection.shuffled().take(imageCount - 1) + selectedImage).shuffled()
@@ -127,17 +115,16 @@ fun RememberImageScreen() {
     if (gameCompleted) {
         AlertDialog(
             onDismissRequest = {
-                // Quay lại màn hình trước đó hoặc thoát ứng dụng
             },
-            title = { Text(text = "Congratulations!") },
-            text = { Text(text = "You've completed all levels!") },
+            title = { Text(text = "Chúc mừng!") },
+            text = { Text(text = "Bạn đã hoàn thành tất cả các lượt chơi") },
             confirmButton = {
                 Button(
                     onClick = {
-                        // Quay lại màn hình trước đó hoặc thoát ứng dụng
+
                     }
                 ) {
-                    Text("OK")
+                    Text("Quay lại màn hình chính")
                 }
             }
         )
@@ -151,14 +138,14 @@ fun RememberImageScreen() {
     Scaffold (
         topBar = {
             TopAppBar(
-                title = { Text("Remember Image") },
+                title = { Text("Đó là hình nào") },
                 navigationIcon = {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { /* Handle menu click */ }
+                            .clickable { }
                     )
                 },
                 actions = {
@@ -172,7 +159,7 @@ fun RememberImageScreen() {
 
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = Color(204, 255, 255),
+                    containerColor = Color(0xFFDCF2F1),
                 )
             )
         }
@@ -181,25 +168,25 @@ fun RememberImageScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues = paddingValues)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(10.dp),
+                    .padding(10.dp)
+                    .background(Color(0xFFFAE7F3)),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ){
                     // Show score and level
-                    Text("Score: $score")
+                    Text("Điểm số: $score")
                     Spacer(modifier = Modifier.width(28.dp))
-                    Text("Level: $level")
+                    Text("Lượt chơi: $level")
 
                 }
-                // Show images for memorization
-                Text("Remember these images:")
                 ImageGrid(
                     images = images,
                     isTimeUp = isTimeUp,
@@ -214,7 +201,7 @@ fun RememberImageScreen() {
 
                 if (isTimeUp) {
                     // Show mixed images for selection
-                    Text("Select the images you saw:")
+                    Text("Đáp án chính xác là")
                     if (selectedImage != -1) {
                         // Display mixed images after time's up
                         val shuffledIndices = mixedImages.indices.toList().shuffled()
@@ -253,10 +240,9 @@ fun RememberImageScreen() {
                             }
                         }
                         Spacer(modifier = Modifier.height(50.dp))
-                        // Button to check selected images
                         Button(
                             onClick = {
-                                if (currentRound in 6..10) {
+                                if (round in 6..10) {
                                     if (selectedImages.size == 2) {
                                         if (selectedImages.contains(selectedImage) && selectedImages.contains(
                                                 selectedImage2
@@ -275,16 +261,16 @@ fun RememberImageScreen() {
                                         }
                                     }
                                 }
-                                currentRound++
-                                level = currentRound
+                                round++
+                                level = round
                                 CoroutineScope(Dispatchers.Main).launch {
-                                    if (currentRound == 11) {
+                                    if (round == 11) {
                                         gameCompleted = true
                                     }
                                     if (scoreIncrease) {
                                         showTickEffect = true
                                     }
-                                    delay(2000) // Adjust the delay time as needed
+                                    delay(2000)
                                     showTickEffect = false
                                     isTimeUp = false
                                     scoreIncrease = false
@@ -295,7 +281,7 @@ fun RememberImageScreen() {
                             },
                             modifier = Modifier.padding(8.dp)
                         ) {
-                            Text("Check Selected Images")
+                            Text("Kiểm tra")
                         }
                     }
                 }
@@ -328,7 +314,7 @@ fun ImageGrid(
                     .clickable { onImageSelected(image) }
             ) {
                 val painter = if (isTimeUp && (image == selectedImage || image == selectedImage2)) {
-                    painterResource(id = displayedImage) // Use displayedImage if isTimeUp and image is selectedImage or selectedImage2
+                    painterResource(id = displayedImage)
                 } else {
                     painterResource(id = image)
                 }
