@@ -118,7 +118,7 @@ fun GameScreen2(gameViewModel: GameViewModel2 = viewModel()) {
         GameStatus(score = gameUiState.score, modifier = Modifier.padding(20.dp))
 
         if (gameUiState.isGameOver) {
-            FinalScoreDialog(
+            FinalScoreDialog2(
                 score = gameUiState.score,
                 onPlayAgain = { gameViewModel.resetGame() }
             )
@@ -130,7 +130,7 @@ fun GameScreen2(gameViewModel: GameViewModel2 = viewModel()) {
  * Creates and shows an AlertDialog with final score.
  */
 @Composable
-private fun FinalScoreDialog(
+private fun FinalScoreDialog2(
     score: Int,
     onPlayAgain: () -> Unit,
     modifier: Modifier = Modifier

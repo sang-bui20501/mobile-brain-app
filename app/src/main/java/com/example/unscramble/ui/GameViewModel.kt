@@ -271,7 +271,7 @@ class GameViewModel : ViewModel() {
     // Set of words used in the game
     private var usedWords: MutableSet<String> = mutableSetOf()
     private lateinit var currentWord: String
-
+    var questionsAsked = 0
     init {
         resetGame()
     }
@@ -297,6 +297,7 @@ class GameViewModel : ViewModel() {
      * Update the user's guess
      */
     fun updateUserGuess(guessedWord: String) {
+        questionsAsked++
         userGuess = guessedWord
     }
 
@@ -306,16 +307,17 @@ class GameViewModel : ViewModel() {
      */
     fun checkUserGuess() {
         val input = userGuess
+        if (_uiState.value.isGameOver) {
+            return
+        }
         if (isInputValid(input)) {
-            val updatedScore = _uiState.value.score.plus( currentWord.length*100)
-            // User's guess is correct, increase the score
-            // and call updateGameState() to prepare the game for the next round
+            val updatedScore = _uiState.value.score.plus(currentWord.length*100)
             updateGameState(updatedScore)
         } else {
-            // User's guess is wrong, show an error
             _uiState.update { currentState ->
                 currentState.copy(isGuessedWordWrong = true)
-            }        }
+            }
+        }
         // Reset user guess
         updateUserGuess("")
     }
@@ -326,7 +328,7 @@ class GameViewModel : ViewModel() {
      * current game state.
      */
     private fun updateGameState(updatedScore: Int) {
-        if (usedWords.size == MAX_NO_OF_WORDS) {
+        if (usedWords.size == MAX_NO_OF_WORDS || questionsAsked >= 9) {
             // Last round in the game, update isGameOver to true, don't pick a new word
             _uiState.update { currentState ->
                 currentState.copy(
@@ -354,10 +356,14 @@ class GameViewModel : ViewModel() {
     * Skip to the next word
     */
     fun skipWord() {
+        if (_uiState.value.isGameOver) {
+            return
+        }
         updateGameState(_uiState.value.score)
         // Reset user guess
         updateUserGuess("")
     }
+
 
     private fun pickRandomLetter(): Char {
         val alphabet = ('A'..'Z').toList()
@@ -369,6 +375,13 @@ class GameViewModel : ViewModel() {
         val unusedWordsStartingWithLetter = allWords
             .filter { word -> word.startsWith(letter, ignoreCase = true) }
             .minus(usedWords)
+
+        if (unusedWordsStartingWithLetter.isEmpty() || _uiState.value.isGameOver) {
+            _uiState.update { currentState ->
+                currentState.copy(isGameOver = true)
+            }
+            return ""
+        }
 
         // Pick a random word from the filtered list
         currentWord = unusedWordsStartingWithLetter.random()
