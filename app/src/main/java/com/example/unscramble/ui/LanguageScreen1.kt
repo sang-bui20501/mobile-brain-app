@@ -16,7 +16,6 @@
 package com.example.unscramble.ui
 
 import android.app.Activity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +30,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
@@ -38,7 +38,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -54,12 +53,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.memorygame.Screen
-import com.example.memorygame.SetupMemory
-import com.example.memorygame.ui.theme.MemoryGameTheme
-import com.example.unscramble.R
+import com.example.memorygame.R
 import com.example.unscramble.ui.theme.UnscrambleTheme
 
 @Composable
@@ -146,6 +140,7 @@ fun GameStatus(score: Int, modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameLayout(
     currentScrambledWord: String,
@@ -191,11 +186,7 @@ fun GameLayout(
                 singleLine = true,
                 shape = shapes.large,
                 modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = colorScheme.surface,
-                    unfocusedContainerColor = colorScheme.surface,
-                    disabledContainerColor = colorScheme.surface,
-                ),
+
                 onValueChange = { onUserGuessChanged(it) },
                 label = {
                     if (isGuessWrong) {
@@ -226,7 +217,6 @@ private fun FinalScoreDialog(
     modifier: Modifier = Modifier
 ) {
     val activity = (LocalContext.current as Activity)
-    lateinit var navController: NavHostController
 
 
     AlertDialog(

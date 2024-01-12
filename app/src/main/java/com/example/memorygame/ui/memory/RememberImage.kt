@@ -46,12 +46,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.compose.material3.AlertDialog
-import com.example.unscramble.R
+import com.example.memorygame.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -340,7 +339,7 @@ private fun TickEffect() {
             .background(Color.LightGray.copy(alpha = 0.5f))
             .pointerInput(Unit) { detectTapGestures {} },
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
             imageVector = Icons.Default.Check,

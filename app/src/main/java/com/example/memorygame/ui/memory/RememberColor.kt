@@ -43,19 +43,14 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Card
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
-import com.example.unscramble.R
+import com.example.memorygame.R
 import kotlinx.coroutines.launch
 import java.lang.Integer.max
 
@@ -326,7 +321,7 @@ private fun TickEffect() {
             .background(Color.LightGray.copy(alpha = 0.5f))
             .pointerInput(Unit) { detectTapGestures {} },
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
             imageVector = Icons.Default.Check,

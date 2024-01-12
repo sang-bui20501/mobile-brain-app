@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.unscramble.R
 import kotlin.math.absoluteValue
 
 
