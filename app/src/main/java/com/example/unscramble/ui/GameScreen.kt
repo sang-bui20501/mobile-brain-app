@@ -16,6 +16,7 @@
 package com.example.unscramble.ui
 
 import android.app.Activity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,6 +54,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.memorygame.Screen
+import com.example.memorygame.SetupMemory
+import com.example.memorygame.ui.theme.MemoryGameTheme
 import com.example.unscramble.R
 import com.example.unscramble.ui.theme.UnscrambleTheme
 
@@ -220,6 +226,8 @@ private fun FinalScoreDialog(
     modifier: Modifier = Modifier
 ) {
     val activity = (LocalContext.current as Activity)
+    lateinit var navController: NavHostController
+
 
     AlertDialog(
         onDismissRequest = {
@@ -233,8 +241,8 @@ private fun FinalScoreDialog(
         dismissButton = {
             TextButton(
                 onClick = {
-                    activity.finish()
-                }
+                  activity.finish()
+                                }
             ) {
                 Text(text = stringResource(R.string.exit))
             }
