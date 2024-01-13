@@ -7,5 +7,5 @@ sealed class Screen(val route: String) {
     object NewImage : Screen("memory_game_new")
     object GameScreen : Screen("language_game_1")
     object GameScreen2 : Screen("language_game_2")
-
+    object GameScreen3 : Screen("language_game_3")
 }
