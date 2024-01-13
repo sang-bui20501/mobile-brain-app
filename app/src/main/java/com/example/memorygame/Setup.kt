@@ -9,6 +9,7 @@ import com.example.memorygame.ui.memory.RememberColorScreen
 import com.example.memorygame.ui.memory.RememberImageScreen
 import com.example.unscramble.ui.GameScreen
 import com.example.unscramble.ui.GameScreen2
+import com.example.unscramble.ui.GameScreen3
 
 @Composable
 fun SetupMemory(
@@ -26,17 +27,17 @@ fun SetupMemory(
         composable(
             route = Screen.RememberColor.route
         ){
-            RememberColorScreen()
+            RememberColorScreen(navController = navController)
         }
         composable(
             route = Screen.NewImage.route
         ){
-            NewImageScreen()
+            NewImageScreen(navController = navController)
         }
         composable(
             route = Screen.RememberImage.route
         ){
-            RememberImageScreen()
+            RememberImageScreen(navController = navController)
         }
 
         composable(
@@ -48,6 +49,11 @@ fun SetupMemory(
             route = Screen.GameScreen2.route
         ){
             GameScreen2()
+        }
+        composable(
+            route = Screen.GameScreen3.route
+        ){
+            GameScreen3()
         }
     }
 }

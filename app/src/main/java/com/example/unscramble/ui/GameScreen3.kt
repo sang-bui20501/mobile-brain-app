@@ -57,8 +57,8 @@ import com.example.memorygame.R
 import com.example.unscramble.ui.theme.UnscrambleTheme
 
 @Composable
-fun GameScreen2(
-    gameViewModel: GameViewModel2 = viewModel()
+fun GameScreen3(
+    gameViewModel: GameViewModel3 = viewModel()
 ) {
     val gameUiState by gameViewModel.uiState.collectAsState()
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
@@ -76,7 +76,7 @@ fun GameScreen2(
             style = typography.titleLarge,
         )
 
-        GameLayout2(
+        GameLayout3(
             onUserGuessChanged = { gameViewModel.updateUserGuess(it) },
             wordCount = gameUiState.currentWordCount,
             userGuess = gameViewModel.userGuess,
@@ -167,7 +167,7 @@ private fun FinalScoreDialog2(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameLayout2(
+fun GameLayout3(
     currentScrambledWord: String,
     wordCount: Int,
     isGuessWrong: Boolean,
@@ -211,7 +211,7 @@ fun GameLayout2(
                 singleLine = true,
                 shape = shapes.large,
                 modifier = Modifier.fillMaxWidth(),
-               
+
                 onValueChange = onUserGuessChanged,
                 label = {
                     if (isGuessWrong) {
@@ -234,8 +234,8 @@ fun GameLayout2(
 
 @Preview(showBackground = true)
 @Composable
-fun GameScreenPreview2() {
+fun GameScreenPreview3() {
     UnscrambleTheme {
-        GameScreen2()
+        GameScreen3()
     }
 }

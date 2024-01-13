@@ -1,5 +1,6 @@
 package com.example.memorygame.ui.memory
 
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.memorygame.R
 import androidx.compose.foundation.layout.Row
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.background
@@ -43,20 +45,29 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Card
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
-import com.example.memorygame.R
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.memorygame.Screen
 import kotlinx.coroutines.launch
 import java.lang.Integer.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RememberColorScreen(){
+fun RememberColorScreen(
+    navController: NavController
+){
     var gameCompleted by remember { mutableStateOf(false) }
     var score by remember { mutableStateOf(0) }
     var level by remember { mutableStateOf(1) }
@@ -96,6 +107,7 @@ fun RememberColorScreen(){
             confirmButton = {
                 Button(
                     onClick = {
+                        navController.navigate(Screen.MemoryScreen.route)
 
                     }
                 ) {
@@ -120,7 +132,7 @@ fun RememberColorScreen(){
             saveBlueSquares = blueSquares
             blueSquares = List(size) {false}
             enableClick = true
-            
+
 
         }
         if (round > 10) {
@@ -145,7 +157,9 @@ fun RememberColorScreen(){
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { }
+                            .clickable {
+                                navController.navigate(Screen.MemoryScreen.route)
+                            }
                     )
                 },
                 actions = {
@@ -215,93 +229,93 @@ fun RememberColorScreen(){
                 ) {
 
 
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(gridSize),
-                            contentPadding = paddingValues,
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            items(size) {index ->
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .aspectRatio(1f)
-                                        .padding(5.dp)
-                                        .shadow(
-                                            elevation = 15.dp,
-                                            shape = MaterialTheme.shapes.extraSmall
-                                        )
-                                        .background(
-                                            when {
-                                                blueSquares.getOrNull(index) == true -> Color.Blue
-                                                falseClick.contains(index) -> Color.Red
-                                                else -> Color.White
-                                            }
-                                        )
-                                        .clickable {
-                                            if(enableClick){
-                                                gameStart = true
-                                                if(saveBlueSquares.getOrNull(index) == true && blueSquares.getOrNull(index) == false){
-                                                    blueSquares = blueSquares.toMutableList().apply {
-                                                        set(index, !this[index])
-                                                    }
-                                                    correctCount++
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(gridSize),
+                        contentPadding = paddingValues,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        items(size) {index ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .aspectRatio(1f)
+                                    .padding(5.dp)
+                                    .shadow(
+                                        elevation = 15.dp,
+                                        shape = MaterialTheme.shapes.extraSmall
+                                    )
+                                    .background(
+                                        when {
+                                            blueSquares.getOrNull(index) == true -> Color.Blue
+                                            falseClick.contains(index) -> Color.Red
+                                            else -> Color.White
+                                        }
+                                    )
+                                    .clickable {
+                                        if(enableClick){
+                                            gameStart = true
+                                            if(saveBlueSquares.getOrNull(index) == true && blueSquares.getOrNull(index) == false){
+                                                blueSquares = blueSquares.toMutableList().apply {
+                                                    set(index, !this[index])
+                                                }
+                                                correctCount++
 
-                                                    if (correctCount == tiles) {
-                                                        enableClick = false
-                                                        score += 100
-                                                        CoroutineScope(Dispatchers.Main).launch {
-                                                            showTickEffect = true
-                                                            delay(2000)
-                                                            showTickEffect = false
-                                                            blueSquares = emptyList()
-                                                            falseClick = emptyList()
-                                                            saveBlueSquares = emptyList()
-                                                            correctCount = 0
-                                                            falseCount = 0
-                                                            level++
-                                                            round++
-                                                        }
-                                                    }
-                                                }else {
-                                                    falseClick = falseClick.toMutableList().apply {
-                                                        add(index)
-                                                    }
-                                                    falseCount++
-                                                    if (falseCount == 1 && tiles == 1) {
-                                                        gameOver = true
-                                                    } else if (falseCount >= 2 && tiles >= 2) {
-                                                        gameOver = true
-                                                    }
-                                                    if(gameOver){
+                                                if (correctCount == tiles) {
+                                                    enableClick = false
+                                                    score += 100
+                                                    CoroutineScope(Dispatchers.Main).launch {
+                                                        showTickEffect = true
+                                                        delay(2000)
+                                                        showTickEffect = false
+                                                        blueSquares = emptyList()
+                                                        falseClick = emptyList()
+                                                        saveBlueSquares = emptyList()
                                                         correctCount = 0
                                                         falseCount = 0
-                                                        enableClick = false
-                                                        CoroutineScope(Dispatchers.Main).launch {
-                                                            blueSquares = saveBlueSquares
-                                                            delay(3000)
-                                                            blueSquares = emptyList()
-                                                            saveBlueSquares = emptyList()
-                                                            falseClick = emptyList()
-                                                            gameOver = false
-                                                            level = max(1, level - 1)
-                                                            round++
-                                                        }
+                                                        level++
+                                                        round++
                                                     }
                                                 }
-
-
-
+                                            }else {
+                                                falseClick = falseClick.toMutableList().apply {
+                                                    add(index)
+                                                }
+                                                falseCount++
+                                                if (falseCount == 1 && tiles == 1) {
+                                                    gameOver = true
+                                                } else if (falseCount >= 2 && tiles >= 2) {
+                                                    gameOver = true
+                                                }
+                                                if(gameOver){
+                                                    correctCount = 0
+                                                    falseCount = 0
+                                                    enableClick = false
+                                                    CoroutineScope(Dispatchers.Main).launch {
+                                                        blueSquares = saveBlueSquares
+                                                        delay(3000)
+                                                        blueSquares = emptyList()
+                                                        saveBlueSquares = emptyList()
+                                                        falseClick = emptyList()
+                                                        gameOver = false
+                                                        level = max(1, level - 1)
+                                                        round++
+                                                    }
+                                                }
                                             }
 
-                                        }
-                                ) {
 
-                                }
+
+                                        }
+
+                                    }
+                            ) {
 
                             }
 
                         }
+
+                    }
 
 
                 }
@@ -321,7 +335,7 @@ private fun TickEffect() {
             .background(Color.LightGray.copy(alpha = 0.5f))
             .pointerInput(Unit) { detectTapGestures {} },
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
     ) {
         Icon(
             imageVector = Icons.Default.Check,
@@ -339,5 +353,7 @@ data class LevelInfo(val level: Int, val tiles: Int, val grid: Pair<Int, Int>)
 @Preview
 @Composable
 fun RememberColorScreenPreview(){
-    RememberColorScreen()
+    RememberColorScreen(
+        navController = rememberNavController()
+    )
 }

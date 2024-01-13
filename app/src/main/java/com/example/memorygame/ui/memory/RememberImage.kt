@@ -1,5 +1,4 @@
 package com.example.memorygame.ui.memory
-
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.memorygame.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -46,16 +46,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.compose.material3.AlertDialog
-import com.example.memorygame.R
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.memorygame.Screen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RememberImageScreen() {
+fun RememberImageScreen(
+    navController: NavController
+) {
     var score by remember { mutableStateOf(0) }
     var showTickEffect by remember { mutableStateOf(false) }
     var level by remember { mutableStateOf(1) }
@@ -120,7 +125,7 @@ fun RememberImageScreen() {
             confirmButton = {
                 Button(
                     onClick = {
-
+                        navController.navigate(Screen.MemoryScreen.route)
                     }
                 ) {
                     Text("Quay lại màn hình chính")
@@ -144,7 +149,9 @@ fun RememberImageScreen() {
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { }
+                            .clickable {
+                                navController.navigate(Screen.MemoryScreen.route)
+                            }
                     )
                 },
                 actions = {
@@ -339,7 +346,7 @@ private fun TickEffect() {
             .background(Color.LightGray.copy(alpha = 0.5f))
             .pointerInput(Unit) { detectTapGestures {} },
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
     ) {
         Icon(
             imageVector = Icons.Default.Check,
@@ -356,5 +363,7 @@ private fun TickEffect() {
 @Composable
 fun RememberImageScreenPreview(
 ) {
-    RememberImageScreen()
+    RememberImageScreen(
+        navController = rememberNavController()
+    )
 }

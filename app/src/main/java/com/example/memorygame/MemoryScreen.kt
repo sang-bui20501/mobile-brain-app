@@ -48,9 +48,9 @@ fun MemoryApp(
         SlideData(R.drawable.screen1, "Ghi nhớ màu", "Cố gắng nhớ những ô màu", Screen.RememberColor.route),
         SlideData(R.drawable.screen2, "Tìm hình mới", "Tìm những hình chưa xuất hiện", Screen.NewImage.route),
         SlideData(R.drawable.screen3, "Đó là hình nào", "Cố gắng ghi nhớ những hình đ ...", Screen.RememberImage.route),
-        SlideData(R.drawable.screen4, "Thêm chữ cái", "Từ một từ cho trước, hãy bổ sung...", Screen.GameScreen.route),
+        SlideData(R.drawable.screen4, "Thêm chữ cái", "Từ một chữ cho trước, hãy bổ sung...", Screen.GameScreen.route),
         SlideData(R.drawable.screen5, "Sắp xếp chữ", "Sắp xếp từ lộn xộn...", Screen.GameScreen2.route),
-
+        SlideData(R.drawable.screen5, "Nối từ", "Từ một từ cho trước, hãy bổ sung...", Screen.GameScreen3.route),
         )
     Column(
         modifier = Modifier
