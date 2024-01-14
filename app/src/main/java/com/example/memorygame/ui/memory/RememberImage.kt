@@ -144,6 +144,7 @@ fun RememberImageScreen(
             selectedImage = -1
             selectedImage2 = -1
             selectedImages = emptyList()
+            checkTime = false
         }
     }
 
