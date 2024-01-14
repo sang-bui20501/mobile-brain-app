@@ -56,12 +56,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.memorygame.Screen
 import kotlinx.coroutines.launch
 import java.lang.Integer.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RememberColorScreen(){
+fun RememberColorScreen(
+    navController: NavController
+){
     var gameCompleted by remember { mutableStateOf(false) }
     var score by remember { mutableStateOf(0) }
     var level by remember { mutableStateOf(1) }
@@ -101,6 +106,7 @@ fun RememberColorScreen(){
             confirmButton = {
                 Button(
                     onClick = {
+                        navController.navigate(Screen.MemoryScreen.route)
 
                     }
                 ) {
@@ -150,7 +156,9 @@ fun RememberColorScreen(){
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { }
+                            .clickable {
+                                navController.navigate(Screen.MemoryScreen.route)
+                            }
                     )
                 },
                 actions = {
@@ -344,5 +352,7 @@ data class LevelInfo(val level: Int, val tiles: Int, val grid: Pair<Int, Int>)
 @Preview
 @Composable
 fun RememberColorScreenPreview(){
-    RememberColorScreen()
+    RememberColorScreen(
+        navController = rememberNavController()
+    )
 }

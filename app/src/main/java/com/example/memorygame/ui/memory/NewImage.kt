@@ -51,12 +51,17 @@ import androidx.compose.material3.Card
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.memorygame.R
+import com.example.memorygame.Screen
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewImageScreen() {
+fun NewImageScreen(
+    navController: NavController
+) {
     var selectedImage by remember { mutableStateOf<ImageItem?>(null) }
     var previousImage by remember { mutableStateOf<List<ImageItem>>(emptyList()) }
     var indexTest by remember { mutableStateOf(0) }
@@ -122,6 +127,7 @@ fun NewImageScreen() {
             confirmButton = {
                 Button(
                     onClick = {
+                        navController.navigate(Screen.MemoryScreen.route)
 
                     }
                 ) {
@@ -143,7 +149,9 @@ fun NewImageScreen() {
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { /* Handle menu click */ }
+                            .clickable {
+                                navController.navigate(Screen.MemoryScreen.route)
+                            }
                     )
                 },
                 actions = {
@@ -285,5 +293,7 @@ data class ImageItem(val id: Int, val imageRes: Int)
 @Preview
 @Composable
 fun ColorMemoryPreview() {
-    NewImageScreen()
+    NewImageScreen(
+        navController = rememberNavController()
+    )
 }

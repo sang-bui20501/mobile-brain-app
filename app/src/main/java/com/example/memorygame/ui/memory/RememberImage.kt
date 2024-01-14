@@ -52,11 +52,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.compose.material3.AlertDialog
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.memorygame.Screen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RememberImageScreen() {
+fun RememberImageScreen(
+    navController: NavController
+) {
     var score by remember { mutableStateOf(0) }
     var showTickEffect by remember { mutableStateOf(false) }
     var level by remember { mutableStateOf(1) }
@@ -121,7 +126,7 @@ fun RememberImageScreen() {
             confirmButton = {
                 Button(
                     onClick = {
-
+                        navController.navigate(Screen.MemoryScreen.route)
                     }
                 ) {
                     Text("Quay lại màn hình chính")
@@ -145,7 +150,9 @@ fun RememberImageScreen() {
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { }
+                            .clickable {
+                                navController.navigate(Screen.MemoryScreen.route)
+                            }
                     )
                 },
                 actions = {
@@ -357,5 +364,7 @@ private fun TickEffect() {
 @Composable
 fun RememberImageScreenPreview(
 ) {
-    RememberImageScreen()
+    RememberImageScreen(
+        navController = rememberNavController()
+    )
 }

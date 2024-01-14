@@ -24,17 +24,17 @@ fun SetupMemory(
         composable(
             route = Screen.RememberColor.route
         ){
-            RememberColorScreen()
+            RememberColorScreen(navController = navController)
         }
         composable(
             route = Screen.NewImage.route
         ){
-            NewImageScreen()
+            NewImageScreen(navController = navController)
         }
         composable(
             route = Screen.RememberImage.route
         ){
-            RememberImageScreen()
+            RememberImageScreen(navController = navController)
         }
     }
 }
