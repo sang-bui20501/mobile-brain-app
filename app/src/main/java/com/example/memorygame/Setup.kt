@@ -43,17 +43,17 @@ fun SetupMemory(
         composable(
             route = Screen.GameScreen.route
         ){
-            GameScreen()
+            GameScreen(navController = navController)
         }
         composable(
             route = Screen.GameScreen2.route
         ){
-            GameScreen2()
+            GameScreen2(navController = navController)
         }
         composable(
             route = Screen.GameScreen3.route
         ){
-            GameScreen3()
+            GameScreen3(navController = navController)
         }
     }
 }
