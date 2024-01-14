@@ -73,6 +73,7 @@ fun RememberImageScreen(
     var selectedImages by remember { mutableStateOf<List<Int>>(emptyList()) }
     var scoreIncrease by remember { mutableStateOf(false) }
     var gameCompleted by remember { mutableStateOf(false) }
+    var checkTime by remember { mutableStateOf(false) }
 
     LaunchedEffect(isTimeUp) {
         val drawableImages = listOf(
@@ -133,6 +134,20 @@ fun RememberImageScreen(
             }
         )
     }
+
+    LaunchedEffect(checkTime){
+        if(checkTime){
+            delay(10000)
+            round++
+            level = round
+            isTimeUp = false
+            selectedImage = -1
+            selectedImage2 = -1
+            selectedImages = emptyList()
+        }
+    }
+
+
 //
 //    LaunchedEffect(score) {
 //        showTickEffect = true
@@ -206,6 +221,7 @@ fun RememberImageScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 if (isTimeUp) {
+                    checkTime = true
                     // Show mixed images for selection
                     Text("Đáp án chính xác là")
                     if (selectedImage != -1) {
@@ -248,6 +264,7 @@ fun RememberImageScreen(
                         Spacer(modifier = Modifier.height(50.dp))
                         Button(
                             onClick = {
+                                checkTime = false
                                 if (round in 6..10) {
                                     if (selectedImages.size == 2) {
                                         if (selectedImages.contains(selectedImage) && selectedImages.contains(
