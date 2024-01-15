@@ -1,1 +1,1 @@
-This project is made by team Android Fresher for the course of Mobile Application Development. Put all items in this repository in a single folder and open it in Android Studio to build and deploy the application
+## This project is made by team Android Fresher for the course of Mobile Application Development. Put all items in this repository in a single folder and open it in Android Studio to build and deploy the application
